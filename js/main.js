@@ -12,28 +12,30 @@ $(document).ready(function(){
 
 // create a function for updating the cart total located at the bottom of `#cart` based on the items currently in the cart
 
-function updateTotal(){
-  console.log('hai');
+function updateTotal(cost){
+  console.log(cost);
+  var total = $('#cart-total').text().slice(1);
+  total = parseInt(total);
+  total += cost;
+  console.log(total);
+  $('#cart-total').empty().append("$" + total);
 };
 
   // attach an event listener to all `.buttons` in the `.list-item`s to detect clicks
     // when clicked, add the item to the table in `#cart` using the template in index.html
     // run the function you created to update the total
 
-$('.items').on('click', '.button', function(e){
+$('#items_container').on('click', '.button', function(e){
   e.preventDefault();
 
   var itemName = $(this).parents('.list-item').find('.list-item-name').text();
-  console.log(itemName);
 
-  var itemPriceString = $(this).parents('.list-item').find('.list-item-price').text();
-  var itemPriceValue = itemPriceString.slice(1);
-  var itemPrice = parseInt(itemPriceValue);
-  console.log(itemPrice);
+  var itemPrice = $(this).parents('.list-item').find('.list-item-price').text().slice(1);
+  itemPrice = parseInt(itemPrice);
 
-$('#cart').append("<tr class='cart-item'><td class='cart-item-name'>" + itemName + "</td><td class='cart-item-price'>$" + itemPrice + "</td><td class='cart-item-remove'><a href='#' class='button'>Remove</a></td></tr>"
+$('#cart').find('tbody').append("<tr class='cart-item'><td class='cart-item-name'>" + itemName + "</td><td class='cart-item-price'>$" + itemPrice + "</td><td class='cart-item-remove'><a href='#' class='button'>Remove</a></td></tr>"
 );
-  // updateTotal();
+  updateTotal(itemPrice);
 });
 
 
