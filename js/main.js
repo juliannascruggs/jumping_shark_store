@@ -38,16 +38,17 @@ $('#cart').find('tbody').append("<tr class='cart-item'><td class='cart-item-name
   updateTotal(itemPrice);
 });
 
-
-
-// $('.price', this).val()
-
-
+function getPrice(){};
 
   // attach an event listener to all `.buttons` in the `.cart-item`s to detect clicks
     // when clicked, remove the item from the table in `#cart`
     // run the function you created to update the total
+$('#cart').on('click', '.button', function(e){
 
+  $(this).closest('.cart-item').remove();
+
+
+});
 
 
 });
