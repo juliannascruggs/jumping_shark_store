@@ -12,15 +12,20 @@ $( document ).ready( function(){
 
 // create a function for updating the cart total located at the bottom of `#cart` based on the items currently in the cart
 
-function updateTotal( price ) {
+function updateTotal( operation , price ) {
+
+  console.log(price);
   // Get current total
   var total = $( '#cart-total' ).text().slice( 1 );
   total = parseInt( total );
 
-  // Add new price
-  total += price;
+  // Update cart total  
+  if ( operation == 'add' ){
+    total += price;
+  }else{
+    total -= price;
+  }
 
-  // Update cart total
   $( '#cart-total' ).empty().append( "$" + total );
 
 };
@@ -34,9 +39,12 @@ function getItem( button ){
   var item = {};
 
   // Recreate the item from the list or cart HTML
-  item['name'] = button.parents( 'div[class$=-item]' ).find( 'span[class$=-item-name]' ).text();
+//  item['name'] = button.parents( 'div[class$=-item]' ).find( 'span[class$=-item-name]' ).text();
+  item['name'] = button.prevAll( '.list-item-header' ).find( '.list-item-name' ).text();
+  //.find( '.list-item-name' ).text();
+  console.log(item['name']);
 
-  item['price'] = button.parents( 'div[class$=-item]' ).find( 'span[class$=-item-price]' ).text().slice( 1 );
+  item['price'] = button.prevAll( '.list-item-header' ).find( '.list-item-price' ).text().slice( 1 );
   item['price'] = parseInt(item['price']);
 
   return item;
@@ -46,25 +54,25 @@ function getItem( button ){
 $('#items_container').on('click', '.button', function(e){
   e.preventDefault();
 
-
-  var item = getItem( $(this) );
+  var item = getItem( $(this).parent() );
 
 $('#cart').find('tbody').append("<tr class='cart-item'><td class='cart-item-name'>" + item['name'] + "</td><td class='cart-item-price'>$" + item['price'] + "</td><td class='cart-item-remove'><a href='#' class='button'>Remove</a></td></tr>"
 );
 
-  updateTotal( item['price'] );
+  updateTotal( 'add' , item['price'] );
 
 });
-
-function getPrice(){};
 
   // attach an event listener to all `.buttons` in the `.cart-item`s to detect clicks
     // when clicked, remove the item from the table in `#cart`
     // run the function you created to update the total
 $('#cart').on('click', '.button', function(e){
 
-  $(this).closest('.cart-item').remove();
+  var item = getItem( $(this) );
+  console.log(item)
+  updateTotal( 'remove' , item['price'] );
 
+  $(this).closest('.cart-item').remove();
 
 });
 
