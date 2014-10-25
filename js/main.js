@@ -29,33 +29,31 @@ function updateTotal( price ) {
     // when clicked, add the item to the table in `#cart` using the template in index.html
     // run the function you created to update the total
 
-function getItemValue( button ){
+function getItem( button ){
 
-  var thing = 'name';
-  var value = button.parents( 'div[class$=-item]' ).find( 'span[class$=-item-' + thing + ']' ).text();
+  var item = {};
 
-  return value;
+  // Recreate the item from the list or cart HTML
+  item['name'] = button.parents( 'div[class$=-item]' ).find( 'span[class$=-item-name]' ).text();
+
+  item['price'] = button.parents( 'div[class$=-item]' ).find( 'span[class$=-item-price]' ).text().slice( 1 );
+  item['price'] = parseInt(item['price']);
+
+  return item;
 
 };
-
-// TODO make a function to get the itemPrice
-
 
 $('#items_container').on('click', '.button', function(e){
   e.preventDefault();
 
-// Call the getName function
-  var itemName = getItemValue( $(this) );
 
-//  var itemName = button.parents('.list-item').find('.list-item-name').text();
+  var item = getItem( $(this) );
 
-// Call the getPrice function
-  var itemPrice = $( this ).parents('.list-item').find('.list-item-price').text().slice(1);
-  itemPrice = parseInt(itemPrice);
-
-$('#cart').find('tbody').append("<tr class='cart-item'><td class='cart-item-name'>" + itemName + "</td><td class='cart-item-price'>$" + itemPrice + "</td><td class='cart-item-remove'><a href='#' class='button'>Remove</a></td></tr>"
+$('#cart').find('tbody').append("<tr class='cart-item'><td class='cart-item-name'>" + item['name'] + "</td><td class='cart-item-price'>$" + item['price'] + "</td><td class='cart-item-remove'><a href='#' class='button'>Remove</a></td></tr>"
 );
-  updateTotal(itemPrice);
+
+  updateTotal( item['price'] );
+
 });
 
 function getPrice(){};
